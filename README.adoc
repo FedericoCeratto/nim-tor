@@ -1,0 +1,31 @@
+
+== Tor helper for Nim
+
+image:https://img.shields.io/badge/status-alpha-orange.svg[badge]
+image:https://img.shields.io/github/tag/FedericoCeratto/nim-tor.svg[tags]
+image:https://img.shields.io/badge/License-LGPL%20v2.1-blue.svg[License]
+
+### Features
+
+* Wrap sockets to use the SOCKS proxy provided by Tor
+* Wrap sockets to connect to Onion Services
+* Authenticates against a local Tor daemon to create / list / delete traditional and ephemeral Onion Services
+* Tested on Linux
+* Basic functional tests
+
+### Usage
+
+Install the library:
+
+[source,bash]
+----
+nimble install tor
+----
+
+See the tests/ dir for usage examples.
+
+To enable authentication with the Controller, install the libsodium wrapper and pass -d:usesodium
+
+### Contributing
+
+Testing and PRs are welcome.
