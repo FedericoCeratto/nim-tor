@@ -22,7 +22,26 @@ Install the library:
 nimble install tor
 ----
 
-See the tests/ dir for usage examples.
+.Usage:
+[source,nim]
+----
+import tor
+
+# connect over Tor
+var s = newProxySocket()
+s.connect("1.1.1.1", 80.Port)
+s.send("GET / \n")
+discard s.recvLine(timeout=3000)
+discard s.recv(200)
+
+# connet to Onion Service
+s = newProxySocket()
+s.connect("facebookcorewwwi.onion", 80.Port)
+s.send("GET / \n")
+discard s.recvLine(timeout=3000)
+----
+
+See the tests/ dir for more usage examples.
 
 To enable authentication with the Controller, install the libsodium wrapper and pass -d:usesodium
 
