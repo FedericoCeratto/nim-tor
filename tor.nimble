@@ -3,7 +3,7 @@
 version       = "0.1.0"
 author        = "Federico Ceratto"
 description   = "Tor helper library"
-license       = "LGPL-3.0"
+license       = "MPL-2.0"
 
 # Dependencies
 

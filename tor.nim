@@ -1,6 +1,6 @@
 ## Tor helper library
 ## Copyright Federico Ceratto <federico.ceratto@gmail.com>
-## Released under LGPLv3 License, see LICENSE file
+## Released under MPLv2 License, see LICENSE file
 ##
 
 import net,
