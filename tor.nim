@@ -1,8 +1,6 @@
 ## Tor helper library
 ## Copyright Federico Ceratto <federico.ceratto@gmail.com>
-## Released under MPLv2 License, see LICENSE file
-##
-## Modified/Updated by KittyTechnoProgrammer
+## Released under MPLv2 License, see LICENSE and CONTRIBUTORS files
 
 import net
 import strutils
@@ -241,41 +239,30 @@ proc connect*(s: ProxySocket, address: string, port: Port) =
 
   s.inner.send("\x05\x01\x00\x03" & address.len.char & address & p)
 
-proc send*(s: ProxySocket; data: pointer; size: int): int = 
-  
+proc send*(s: ProxySocket; data: pointer; size: int): int =
   ##  Sends data to a socket.
   ##  Note: This is a low-level version of send. You likely should use the version below.
-  
   return s.inner.send(data, size)
 
 proc send*(s: ProxySocket; data: string; flags = {SafeDisconn}) =
-  
   ##  Sends data to a socket
-  
   s.inner.send(data, flags)
 
-proc trySend*(s: ProxySocket; data: string): bool = 
-  
+proc trySend*(s: ProxySocket; data: string): bool =
   ##  alternative to send. Does not raise an OSError when an error occurs, and instead returns false on failure.
 
   return s.inner.trySend(data)
 
 
-proc isSsl*(s: ProxySocket): bool = 
-  
+proc isSsl*(s: ProxySocket): bool =
   ##  Determines whether socket is a SSL socket.
-  
   return s.inner.isSsl()
 
-proc getFd*(s: ProxySocket): SocketHandle = 
-
-  
+proc getFd*(s: ProxySocket): SocketHandle =
   ##  Returns the socket's file descriptor 
-  
   return s.inner.getFd()
 
 proc recv*(s: ProxySocket; size: int; timeout = -1; flags = {SafeDisconn}): string =
-  
   ## Higher-level version of recv which returns a string.
   ## Reads up to size bytes from socket into buf.
   ## For buffered sockets this function will attempt to read all the requested data. It will read this data in BufferSize chunks.
@@ -284,69 +271,54 @@ proc recv*(s: ProxySocket; size: int; timeout = -1; flags = {SafeDisconn}): stri
   ## This function will throw an OSError exception when an error occurs.
   ## A timeout may be specified in milliseconds, if enough data is not received within the time specified a TimeoutError exception will be raised.
   ## Warning: Only the SafeDisconn flag is currently supported.
-  
   return s.inner.recv(size, timeout, flags)
 
 proc recv*(s: ProxySocket; data: pointer; size: int): int =
-  
-  ##  Receives data from a socket.
-  ##  Note: This is a low-level function, you may be interested in the higher level versions of this function which are also named recv.
-  
+  ## Receives data from a socket.
+  ## Note: This is a low-level function, you may be interested in the higher level versions of this function which are also named recv.
   return s.inner.recv(data, size)
 
-proc recv*(s: ProxySocket; data: pointer; size: int; timeout: int): int = 
-  
-  ##  Receives data from a socket.
-  ##  Note: This is a low-level function, you may be interested in the higher level versions of this function which are also named recv.
-  ##  overload with a timeout parameter in milliseconds.
-  
+proc recv*(s: ProxySocket; data: pointer; size: int; timeout: int): int =
+  ## Receives data from a socket.
+  ## Note: This is a low-level function, you may be interested in the higher level versions of this function which are also named recv.
+  ## overload with a timeout parameter in milliseconds.
   return s.inner.recv(data, size, timeout)
 
 proc recv*(s: ProxySocket; data: var string; size: int; timeout = -1; flags = {SafeDisconn}): int =
-  
-  ##  Higher-level version of recv.
-  ##  Reads up to size bytes from socket into buf.
-  ##  For buffered sockets this function will attempt to read all the requested data. It will read this data in BufferSize chunks.
-  ##  For unbuffered sockets this function makes no effort to read all the data requested. It will return as much data as the operating system gives it.
-  ##  When 0 is returned the socket's connection has been closed.
-  ##  This function will throw an OSError exception when an error occurs. A value lower than 0 is never returned.
-  ##  A timeout may be specified in milliseconds, if enough data is not received within the time specified a TimeoutError exception will be raised.
-  ##  Note: data must be initialised.
-  ##  Warning: Only the SafeDisconn flag is currently supported.
-  
+  ## Higher-level version of recv.
+  ## Reads up to size bytes from socket into buf.
+  ## For buffered sockets this function will attempt to read all the requested data. It will read this data in BufferSize chunks.
+  ## For unbuffered sockets this function makes no effort to read all the data requested. It will return as much data as the operating system gives it.
+  ## When 0 is returned the socket's connection has been closed.
+  ## This function will throw an OSError exception when an error occurs. A value lower than 0 is never returned.
+  ## A timeout may be specified in milliseconds, if enough data is not received within the time specified a TimeoutError exception will be raised.
+  ## Note: data must be initialised.
+  ## Warning: Only the SafeDisconn flag is currently supported.
   return s.inner.recv(data, size, timeout, flags)
 
 proc recvLine*(s: ProxySocket; timeout = -1; flags = {SafeDisconn}; maxLength = MaxLineLength): TaintedString =
-  
-  ##  Reads a line of data from socket.
-  ##  If a full line is read \r\L is not added to the result, however if solely \r\L is read then the result will be set to it.
-  ##  If the socket is disconnected, the result will be set to "".
-  ##  An OSError exception will be raised in the case of a socket error.
-  ##  A timeout can be specified in milliseconds, if data is not received within the specified time a TimeoutError exception will be raised.
-  ##  The maxLength parameter determines the maximum amount of characters that can be read. The result is truncated after that.
-  ##  Warning: Only the SafeDisconn flag is currently supported.
-  
+  ## Reads a line of data from socket.
+  ## If a full line is read \r\L is not added to the result, however if solely \r\L is read then the result will be set to it.
+  ## If the socket is disconnected, the result will be set to "".
+  ## An OSError exception will be raised in the case of a socket error.
+  ## A timeout can be specified in milliseconds, if data is not received within the specified time a TimeoutError exception will be raised.
+  ## The maxLength parameter determines the maximum amount of characters that can be read. The result is truncated after that.
+  ## Warning: Only the SafeDisconn flag is currently supported.
   s.inner.recvLine(timeout, flags, maxLength)
 
-
-proc readLine*(s: ProxySocket, line: var TaintedString, timeout = -1, flags = {SafeDisconn}, maxLength = MaxLineLength) =  
-  
-  ##  Reads a line of data from socket.
-  ##  If a full line is read \r\L is not added to line, however if solely \r\L is read then line will be set to it.
-  ##  If the socket is disconnected, line will be set to "".
-  ##  An OSError exception will be raised in the case of a socket error.
-  ##  A timeout can be specified in milliseconds, if data is not received within the specified time a TimeoutError exception will be raised.
-  ##  The maxLength parameter determines the maximum amount of characters that can be read. The result is truncated after that.
-  ##  Warning: Only the SafeDisconn flag is currently supported.
-  
+proc readLine*(s: ProxySocket, line: var TaintedString, timeout = -1, flags = {SafeDisconn}, maxLength = MaxLineLength) =
+  ## Reads a line of data from socket.
+  ## If a full line is read \r\L is not added to line, however if solely \r\L is read then line will be set to it.
+  ## If the socket is disconnected, line will be set to "".
+  ## An OSError exception will be raised in the case of a socket error.
+  ## A timeout can be specified in milliseconds, if data is not received within the specified time a TimeoutError exception will be raised.
+  ## The maxLength parameter determines the maximum amount of characters that can be read. The result is truncated after that.
+  ## Warning: Only the SafeDisconn flag is currently supported.
   s.inner.readLine(line, timeout, flags, maxLength)
 
-
 proc skip*(s: ProxySocket; size: int; timeout = -1) =
-  
   ## Skips size amount of bytes.
   ## An optional timeout can be specified in milliseconds, if skipping the bytes takes longer than specified a TimeoutError exception will be raised.
-  
   s.inner.skip(size, timeout)
 
 proc close*(s: ProxySocket) =
