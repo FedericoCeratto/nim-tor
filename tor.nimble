@@ -1,10 +1,10 @@
 # Package
 
-version       = "0.1.0"
-author        = "Federico Ceratto"
+version       = "0.2.0"
+author        = "Federico Ceratto and KittyTechno"
 description   = "Tor helper library"
 license       = "MPL-2.0"
 
 # Dependencies
 
-requires "nim >= 0.20.0"
+requires "nim >= 1.2.6"
