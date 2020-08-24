@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.1.0"
+version       = "0.2.0"
 author        = "Federico Ceratto and KittyTechno"
 description   = "Tor helper library"
 license       = "MPL-2.0"
