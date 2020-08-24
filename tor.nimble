@@ -7,4 +7,4 @@ license       = "MPL-2.0"
 
 # Dependencies
 
-requires "nim >= 1.2.6"
+requires "nim >= 1.0.0"
