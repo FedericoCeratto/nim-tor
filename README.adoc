@@ -43,6 +43,8 @@ echo s.recvLine(timeout=9000)
 
 See the tests/ dir for more usage examples.
 
+See tests/serve_file_demo.nim for a HTTP-based onion service demo
+
 To enable authentication with the Controller, install the libsodium wrapper and pass -d:usesodium
 
 ### Contributing
